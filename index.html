@@ -832,6 +832,75 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.45);
+    /* Startup Preloader */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      background: #06070a;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+      cursor: pointer;
+    }
+
+    #preloader.dismissed {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .preloader-box {
+      text-align: center;
+      max-width: 420px;
+      padding: 2.5rem;
+      background: var(--glass-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      backdrop-filter: blur(20px);
+    }
+
+    .preloader-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+
+    .preloader-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--accent-coral);
+      margin-bottom: 1.6rem;
+    }
+
+    .preloader-bar-bg {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .preloader-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--accent-red);
+      box-shadow: 0 0 12px var(--accent-red-glow);
+      transition: width 0.12s ease;
+    }
+
+    .preloader-stats {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
     }
 
     /* Responsive Adaptation */
@@ -889,6 +958,9 @@
       <div class="preloader-stats" id="preloader-stats">INITIALIZING ASSETS 0%</div>
     </div>
   </div>
+
+  <!-- Background Soundtrack Audio (Autoplay Enabled) -->
+  <audio id="bg-soundtrack" src="old_town_road.mp3" loop autoplay playsinline preload="auto"></audio>
 
   <!-- Top Glass HUD Header with Chapter Nav -->
   <header class="hud-header">
@@ -1710,63 +1782,94 @@
       });
 
       soundToggle.addEventListener('click', toggleAudio);
-      window.addEventListener('pointerdown', autoStartAudioOnInteraction, { once: true });
-      window.addEventListener('keydown', autoStartAudioOnInteraction, { once: true });
+      if (preloader) {
+        preloader.addEventListener('click', () => {
+          if (!isAppReady) launchExperience();
+          playSoundtrack();
+        });
+      }
+
+      setupGestureTriggers();
     }
 
     /* --------------------------------------------------------------------------
-       7. OLD TOWN ROAD SOUNDTRACK ENGINE
+       7. OLD TOWN ROAD SOUNDTRACK ENGINE (AUTOPLAY ON OPEN)
        -------------------------------------------------------------------------- */
     let soundtrack = null;
     let isTrackPlaying = false;
     let userPaused = false;
+    const gestureEvents = ['click', 'pointerdown', 'touchstart', 'scroll', 'wheel', 'keydown', 'mousemove'];
 
     function initSoundtrack() {
-      if (soundtrack) return;
-      soundtrack = new Audio('old_town_road.mp3');
-      soundtrack.loop = true;
-      soundtrack.volume = 0.6;
-      soundtrack.preload = 'auto';
+      if (!soundtrack) {
+        soundtrack = document.getElementById('bg-soundtrack') || new Audio('old_town_road.mp3');
+        soundtrack.loop = true;
+        soundtrack.volume = 0.65;
 
-      soundtrack.addEventListener('play', () => {
-        isTrackPlaying = true;
-        soundToggle.classList.add('playing');
-        if (soundState) soundState.textContent = 'PAUSE';
-      });
+        soundtrack.addEventListener('play', () => {
+          isTrackPlaying = true;
+          soundToggle.classList.add('playing');
+          if (soundState) soundState.textContent = 'PAUSE';
+          cleanupGestureTriggers();
+        });
 
-      soundtrack.addEventListener('pause', () => {
-        isTrackPlaying = false;
-        soundToggle.classList.remove('playing');
-        if (soundState) soundState.textContent = 'PLAY';
-      });
+        soundtrack.addEventListener('pause', () => {
+          isTrackPlaying = false;
+          soundToggle.classList.remove('playing');
+          if (soundState) soundState.textContent = 'PLAY';
+        });
 
-      soundtrack.addEventListener('error', (e) => {
-        console.warn('Soundtrack loading notice:', e);
-      });
+        soundtrack.addEventListener('error', (e) => {
+          console.warn('Soundtrack note:', e);
+        });
+      }
+    }
+
+    function playSoundtrack() {
+      if (userPaused) return;
+      initSoundtrack();
+      if (soundtrack && soundtrack.paused) {
+        const promise = soundtrack.play();
+        if (promise !== undefined) {
+          promise.then(() => {
+            cleanupGestureTriggers();
+          }).catch(() => {
+            // Browser restricted initial zero-interaction autoplay;
+            // fallback gesture listeners will start playback on first mouse move / scroll / click
+          });
+        }
+      }
     }
 
     function toggleAudio(e) {
       if (e) e.stopPropagation();
-      if (!soundtrack) initSoundtrack();
+      initSoundtrack();
       if (!soundtrack) return;
 
       if (soundtrack.paused) {
         userPaused = false;
-        soundtrack.play().catch(err => console.warn('Audio play prevented:', err));
+        soundtrack.play().catch(err => console.warn('Play error:', err));
       } else {
         userPaused = true;
         soundtrack.pause();
       }
     }
 
-    function autoStartAudioOnInteraction() {
+    function onUserGesture() {
       if (userPaused) return;
-      if (!soundtrack) initSoundtrack();
-      if (soundtrack && soundtrack.paused) {
-        soundtrack.play().catch(() => {
-          // Browser requires user to directly click the soundToggle button
-        });
-      }
+      playSoundtrack();
+    }
+
+    function setupGestureTriggers() {
+      gestureEvents.forEach(evt => {
+        window.addEventListener(evt, onUserGesture, { passive: true, once: false });
+      });
+    }
+
+    function cleanupGestureTriggers() {
+      gestureEvents.forEach(evt => {
+        window.removeEventListener(evt, onUserGesture);
+      });
     }
 
     /* --------------------------------------------------------------------------
@@ -1780,10 +1883,14 @@
       preloader.classList.add('dismissed');
 
       setupEventListeners();
+      playSoundtrack();
       requestAnimationFrame(animationLoop);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      initSoundtrack();
+      playSoundtrack();
+      setupGestureTriggers();
       initFrameLoading();
     });
   </script>

@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sajil Binu — Computer Science Engineer & AI Developer</title>
+  <meta name="description" content="Portfolio of Sajil Binu, Computer Science Engineer specializing in AI, Machine Learning, and Full Stack Development.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --accent-red: #ff3b3b;
+      --accent-red-glow: rgba(255, 59, 59, 0.45);
+      --accent-coral: #ff5e57;
+      --accent-gold: #e2a65e;
+      --glass-bg: rgba(14, 17, 23, 0.72);
+      --glass-card: rgba(18, 22, 30, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.09);
+      --glass-border-hover: rgba(255, 255, 255, 0.25);
+      --pill-bg: rgba(255, 255, 255, 0.05);
+      --pill-border: rgba(255, 255, 255, 0.09);
+      --pill-hover: rgba(255, 255, 255, 0.14);
+      --text-main: #f3f4f6;
+      --text-muted: rgba(243, 244, 246, 0.65);
+      --text-dim: rgba(243, 244, 246, 0.42);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset & Essentials */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      scroll-behavior: auto;
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Minimalist Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.85);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 59, 59, 0.3);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 59, 59, 0.7);
+    }
+
+    /* Virtual Scroll Driver Track */
+    #scroll-track {
+      height: 750vh;
+      position: relative;
+      background: transparent;
+    }
+
+    /* Fixed Canvas Background */
+    #canvas-container {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      overflow: hidden;
+      background: #000;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Vignette and Atmospheric Gradients */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(5, 7, 10, 0.75) 100%),
+                  linear-gradient(to bottom, rgba(5,7,10,0.6) 0%, transparent 18%, transparent 78%, rgba(5,7,10,0.92) 100%);
+      z-index: 2;
+    }
+
+    /* Top Navigation Header */
+    header.hud-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(180deg, rgba(7,8,10,0.85) 0%, rgba(7,8,10,0) 100%);
+      pointer-events: none;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      pointer-events: auto;
+    }
+
+    .brand-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-title .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-red);
+      box-shadow: 0 0 10px var(--accent-red);
+    }
+
+    .brand-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      background: rgba(255, 59, 59, 0.12);
+      border: 1px solid rgba(255, 59, 59, 0.3);
+      color: var(--accent-coral);
+      font-weight: 600;
+    }
+
+    /* Chapter Quick Jump Nav in Header */
+    .chapter-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      pointer-events: auto;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      padding: 0.25rem 0.4rem;
+    }
+
+    .chapter-pill {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 0.35rem 0.8rem;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chapter-pill:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .chapter-pill.active {
+      background: rgba(255, 59, 59, 0.25);
+      border-color: rgba(255, 59, 59, 0.45);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      pointer-events: auto;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .nav-link.resume-pill {
+      background: rgba(255, 59, 59, 0.18);
+      border-color: rgba(255, 59, 59, 0.4);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .nav-link.resume-pill:hover {
+      background: var(--accent-red);
+      box-shadow: 0 0 16px var(--accent-red-glow);
+    }
+
+    /* Buffering Badge */
+    .stream-status {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-dim);
+      transition: opacity 0.5s ease;
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    .pulse-dot.buffering {
+      background: var(--accent-red);
+      box-shadow: 0 0 8px var(--accent-red);
+      animation: pulse 1.2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* Old Town Road Soundtrack Player */
+    .sound-btn {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.85rem;
+      border-radius: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .sound-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .sound-btn.playing {
+      background: rgba(255, 59, 59, 0.16);
+      border-color: rgba(255, 59, 59, 0.55);
+      color: #fff;
+      box-shadow: 0 0 18px var(--accent-red-glow);
+    }
+
+    .equalizer-bars {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 12px;
+      width: 14px;
+    }
+
+    .equalizer-bars .bar {
+      flex: 1;
+      background: var(--accent-coral);
+      border-radius: 1px;
+      height: 3px;
+      transition: height 0.2s ease;
+    }
+
+    .sound-btn.playing .equalizer-bars .bar-1 {
+      animation: eqBounce 0.8s ease-in-out infinite alternate;
+    }
+    .sound-btn.playing .equalizer-bars .bar-2 {
+      animation: eqBounce 0.6s ease-in-out infinite alternate 0.2s;
+    }
+    .sound-btn.playing .equalizer-bars .bar-3 {
+      animation: eqBounce 0.9s ease-in-out infinite alternate 0.4s;
+    }
+    .sound-btn.playing .equalizer-bars .bar-4 {
+      animation: eqBounce 0.7s ease-in-out infinite alternate 0.1s;
+    }
+
+    @keyframes eqBounce {
+      0% { height: 2px; }
+      50% { height: 12px; }
+      100% { height: 4px; }
+    }
+
+    .music-note-icon {
+      width: 13px;
+      height: 13px;
+      fill: currentColor;
+    }
+
+    .song-title-marquee {
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .song-state-pill {
+      font-size: 0.62rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-dim);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      transition: all 0.2s ease;
+    }
+
+    .sound-btn.playing .song-state-pill {
+      background: var(--accent-red);
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       STORY PRESENTATION LAYERS & SECTIONS
+       ========================================================================== */
+    .story-viewport {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* SECTION 1: HERO INTRO */
+    .hero-stage {
+      position: absolute;
+      text-align: center;
+      max-width: 820px;
+      padding: 2rem;
+      opacity: 0;
+      transform: translateY(20px) scale(0.97);
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    .hero-stage.active {
+      pointer-events: auto;
+    }
+
+    .hero-pretitle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent-coral);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 7vw, 5.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(180deg, #ffffff 50%, rgba(255,255,255,0.65) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+    }
+
+    .hero-summary {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 1.8rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    }
+
+    .hero-badges {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.4rem 0.9rem;
+      background: var(--glass-card);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(16px);
+      border-radius: 999px;
+      color: var(--text-main);
+      letter-spacing: 0.05em;
+    }
+
+    /* ==========================================================================
+       SECTION 2: SKILL ARSENAL // DUAL-SIDE GLASS MATRIX
+       ========================================================================== */
+    .skills-matrix-stage {
+      position: absolute;
+      inset: 0;
+      padding: 5.5rem 3.5vw 4rem;
+      display: grid;
+      grid-template-columns: 360px 1fr 380px;
+      align-items: center;
+      gap: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      perspective: 1200px;
+    }
+
+    .skills-matrix-stage.active {
+      pointer-events: auto;
+    }
+
+    .matrix-col-left, .matrix-col-right {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      z-index: 15;
+      will-change: transform, opacity;
+      transform-style: preserve-3d;
+      transition: none;
+    }
+
+    .matrix-center-gap {
+      pointer-events: none;
+    }
+
+    .matrix-header {
+      margin-bottom: 0.2rem;
+      will-change: transform, opacity;
+    }
+
+    .matrix-category-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-coral);
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .matrix-category-label svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .matrix-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    }
+
+    .matrix-card {
+      background: var(--glass-card);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.25rem 1.35rem;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      transform: translateY(var(--stagger-y, 0px));
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      will-change: transform;
+    }
+
+    .matrix-card:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(calc(var(--stagger-y, 0px) - 5px)) scale(1.015);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .card-accent-bar {
+      width: 24px;
+      height: 2px;
+      background: var(--accent-red);
+      box-shadow: 0 0 8px var(--accent-red-glow);
+      margin-bottom: 0.65rem;
+      border-radius: 2px;
+    }
+
+    .matrix-card-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-coral);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .matrix-card-title .card-count {
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    .pill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .matrix-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 500;
+      padding: 0.35rem 0.65rem;
+      background: var(--pill-bg);
+      border: 1px solid var(--pill-border);
+      border-radius: 6px;
+      color: #e5e7eb;
+      letter-spacing: 0.02em;
+      transition: all 0.2s ease;
+      cursor: default;
+    }
+
+    .matrix-pill:hover {
+      background: var(--pill-hover);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .matrix-pill.highlight {
+      background: rgba(255, 59, 59, 0.12);
+      border-color: rgba(255, 59, 59, 0.35);
+      color: #ff9d9d;
+    }
+
+    .entry-item {
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .entry-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.25rem;
+    }
+
+    .entry-name {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #ffffff;
+    }
+
+    .entry-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+    }
+
+    .entry-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 0.5rem;
+    }
+
+    /* SECTION 3: PROJECT EXPERIENCE DEEP DIVE */
+    .experience-stage {
+      position: absolute;
+      inset: 0;
+      padding: 6rem 8vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      opacity: 0;
+      pointer-events: none;
+      perspective: 1200px;
+    }
+
+    .experience-stage.active {
+      pointer-events: auto;
+    }
+
+    .exp-left, .exp-right {
+      flex: 1;
+      max-width: 480px;
+      will-change: transform, opacity;
+      transform-style: preserve-3d;
+      transition: none;
+    }
+
+    /* SECTION 4: CLIMAX & DIRECT CONTACT */
+    .contact-stage {
+      position: absolute;
+      text-align: center;
+      max-width: 680px;
+      padding: 2.5rem;
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    .contact-stage.active {
+      pointer-events: auto;
+    }
+
+    .contact-stage h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin: 1.8rem 0;
+      text-align: left;
+    }
+
+    .contact-card {
+      background: var(--glass-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      transition: all 0.25s ease;
+    }
+
+    .contact-card:hover {
+      border-color: var(--accent-red);
+      transform: translateY(-2px);
+      background: rgba(255, 59, 59, 0.08);
+    }
+
+    .contact-card .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-coral);
+    }
+
+    .contact-card .val {
+      font-size: 0.85rem;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--accent-red);
+      color: #fff;
+      border: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px var(--accent-red-glow);
+      text-decoration: none;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary:hover {
+      background: #ff5252;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px var(--accent-red-glow);
+    }
+
+    .btn-secondary {
+      background: var(--glass-card);
+      color: #fff;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.88rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    /* Scroll Prompt */
+    .scroll-prompt {
+      position: fixed;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .scroll-prompt.hidden {
+      opacity: 0;
+    }
+
+    .mouse-icon {
+      width: 18px;
+      height: 28px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      padding-top: 4px;
+    }
+
+    .mouse-wheel {
+      width: 2px;
+      height: 5px;
+      background: #fff;
+      border-radius: 2px;
+      animation: wheelRoll 1.6s infinite ease-in-out;
+    }
+
+    @keyframes wheelRoll {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(10px); opacity: 0; }
+    }
+
+    .prompt-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    /* Responsive Adaptation */
+    @media (max-width: 1120px) {
+      .skills-matrix-stage {
+        grid-template-columns: 320px 1fr 320px;
+        padding: 5.5rem 2vw;
+      }
+      .matrix-title {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 900px) {
+      header.hud-header {
+        padding: 1rem 1.2rem;
+      }
+      .chapter-nav {
+        display: none;
+      }
+      .header-nav .nav-link:not(.resume-pill) {
+        display: none;
+      }
+      .skills-matrix-stage {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        padding: 5rem 1rem 4rem;
+        pointer-events: auto;
+        gap: 1rem;
+      }
+      .matrix-center-gap {
+        display: none;
+      }
+      .matrix-col-left, .matrix-col-right {
+        width: 100%;
+        max-width: 500px;
+      }
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Startup Preloader -->
+  <div id="preloader">
+    <div class="preloader-box">
+      <div class="preloader-title">SAJIL BINU</div>
+      <div class="preloader-sub">PORTFOLIO MATRIX // 2026</div>
+      <div class="preloader-bar-bg">
+        <div class="preloader-bar-fill" id="preloader-bar"></div>
+      </div>
+      <div class="preloader-stats" id="preloader-stats">INITIALIZING ASSETS 0%</div>
+    </div>
+  </div>
+
+  <!-- Top Glass HUD Header with Chapter Nav -->
+  <header class="hud-header">
+    <div class="brand-group">
+      <div class="brand-title">
+        <span class="dot"></span>
+        SAJIL BINU
+      </div>
+      <span class="brand-role">CS &amp; AI ENGINEER</span>
+    </div>
+
+    <!-- Chapter Navigation -->
+    <nav class="chapter-nav">
+      <button class="chapter-pill active" data-progress="0.0">Overview</button>
+      <button class="chapter-pill" data-progress="0.38">Skill Arsenal</button>
+      <button class="chapter-pill" data-progress="0.74">Projects</button>
+      <button class="chapter-pill" data-progress="0.96">Contact</button>
+    </nav>
+
+    <div class="header-nav">
+      <div class="stream-status" id="stream-badge">
+        <span class="pulse-dot buffering" id="stream-dot"></span>
+        <span id="stream-label">CACHING 0%</span>
+      </div>
+
+      <a href="https://github.com/sajilbinuaaa-create" target="_blank" rel="noopener noreferrer" class="nav-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+
+      <a href="https://linkedin.com/in/sajil-binu-058181259" target="_blank" rel="noopener noreferrer" class="nav-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        LinkedIn
+      </a>
+
+      <a href="sajil Resume.pdf" target="_blank" class="nav-link resume-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Resume PDF
+      </a>
+
+      <button class="sound-btn" id="sound-toggle" aria-label="Toggle Soundtrack: Old Town Road">
+        <span class="equalizer-bars" id="eq-bars">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
+          <span class="bar bar-4"></span>
+        </span>
+        <svg viewBox="0 0 24 24" class="music-note-icon">
+          <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+        <span class="song-title-marquee" id="sound-text">OLD TOWN ROAD</span>
+        <span class="song-state-pill" id="sound-state">PLAY</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Fixed Canvas Projection -->
+  <div id="canvas-container">
+    <canvas id="scrub-canvas"></canvas>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- Narrative Viewport -->
+  <div class="story-viewport">
+
+    <!-- ====================================================================
+         BEAT 1: HERO INTRO (0% - 18%)
+         ==================================================================== -->
+    <div class="hero-stage active" id="beat-1">
+      <div class="hero-pretitle">
+        <span style="color:var(--accent-red);">&bull;</span>
+        ENGINEERING &amp; AI INNOVATION
+      </div>
+      <h1 class="hero-title">SAJIL BINU</h1>
+      <p class="hero-summary">
+        Final-year Computer Science Engineering student with strong foundations in Python, Machine Learning, Artificial Intelligence, and Software Architecture.
+      </p>
+      <div class="hero-badges">
+        <span class="hero-pill">B.Tech CSE &middot; 2027</span>
+        <span class="hero-pill">AI &amp; Deep Learning Intern</span>
+        <span class="hero-pill">Full Stack Developer</span>
+        <span class="hero-pill">Kannur, Kerala</span>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         BEAT 2: SKILL ARSENAL // DUAL-SIDE GLASS MATRIX (22% - 62%)
+         ==================================================================== -->
+    <div class="skills-matrix-stage" id="beat-2">
+
+      <!-- LEFT COLUMN -->
+      <div class="matrix-col-left">
+
+        <!-- Top Left Matrix Title Header -->
+        <div class="matrix-header">
+          <div class="matrix-category-label">
+            <svg viewBox="0 0 24 24"><path d="M9 2v3h6V2h2v3h3a2 2 0 0 1 2 2v3h3v2h-3v4h3v2h-3v3a2 2 0 0 1-2 2h-3v3h-2v-3H9v3H7v-3H4a2 2 0 0 1-2-2v-3H0v-2h2v-4H0V9h2V7a2 2 0 0 1 2-2h3V2h2zm11 5H4v10h16V7zM6 9h12v6H6V9z"/></svg>
+            TECHNICAL SKILLS // MATRIX
+          </div>
+          <h2 class="matrix-title">Skill Arsenal</h2>
+        </div>
+
+        <!-- Left Card 1: LANGUAGES & TOOLS -->
+        <div class="matrix-card">
+          <div class="card-accent-bar"></div>
+          <div class="matrix-card-title">
+            <span>LANGUAGES &amp; TOOLS</span>
+            <span class="card-count">09</span>
+          </div>
+          <div class="pill-grid">
+            <span class="matrix-pill highlight">Python</span>
+            <span class="matrix-pill">Java</span>
+            <span class="matrix-pill">C</span>
+            <span class="matrix-pill">HTML</span>
+            <span class="matrix-pill">SQL</span>
+            <span class="matrix-pill">Git</span>
+            <span class="matrix-pill">GitHub</span>
+            <span class="matrix-pill">VS Code</span>
+            <span class="matrix-pill">Android Studio</span>
+          </div>
+        </div>
+
+        <!-- Left Card 2: FRAMEWORKS & TECHNOLOGIES -->
+        <div class="matrix-card">
+          <div class="card-accent-bar"></div>
+          <div class="matrix-card-title">
+            <span>FRAMEWORKS &amp; TECHNOLOGIES</span>
+            <span class="card-count">05</span>
+          </div>
+          <div class="pill-grid">
+            <span class="matrix-pill highlight">Flask</span>
+            <span class="matrix-pill">Flutter</span>
+            <span class="matrix-pill">REST APIs</span>
+            <span class="matrix-pill highlight">MongoDB</span>
+            <span class="matrix-pill">Full Stack Dev</span>
+          </div>
+        </div>
+
+        <!-- Left Card 3: CORE CONCEPTS & SYSTEMS -->
+        <div class="matrix-card">
+          <div class="card-accent-bar"></div>
+          <div class="matrix-card-title">
+            <span>CONCEPTS &amp; ARCHITECTURE</span>
+            <span class="card-count">06</span>
+          </div>
+          <div class="pill-grid">
+            <span class="matrix-pill">Software Engineering</span>
+            <span class="matrix-pill highlight">AI / ML</span>
+            <span class="matrix-pill">Data Structures</span>
+            <span class="matrix-pill">Web Development</span>
+            <span class="matrix-pill">Workflow Automation</span>
+            <span class="matrix-pill">Backend APIs</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CENTER GAP: Allows Sajil's visual frame animation to remain focal -->
+      <div class="matrix-center-gap"></div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="matrix-col-right">
+
+        <!-- Right Card 1: AI & MACHINE LEARNING -->
+        <div class="matrix-card">
+          <div class="card-accent-bar"></div>
+          <div class="matrix-card-title">
+            <span>AI &amp; MACHINE LEARNING</span>
+            <span class="card-count">06</span>
+          </div>
+          <div class="pill-grid">
+            <span class="matrix-pill highlight">AI Agents</span>
+            <span class="matrix-pill">Sentiment Analysis</span>
+            <span class="matrix-pill">Image Classification</span>
+            <span class="matrix-pill highlight">Deep Learning</span>
+            <span class="matrix-pill">Sign Language AI</span>
+            <span class="matrix-pill">AI Workflows</span>
+          </div>
+        </div>
+
+        <!-- Right Card 2: INTERNSHIP & PROJECTS -->
+        <div class="matrix-card">
+          <div class="card-accent-bar"></div>
+          <div class="matrix-card-title">
+            <span>EXPERIENCE &amp; PROJECTS</span>
+          </div>
+          <div class="entry-item">
+            <div class="entry-header">
+              <span class="entry-name">Novolo.ai &amp; AccelerateX</span>
+              <span class="entry-date">MAY - JUN 2025</span>
+            </div>
+            <p class="entry-desc">
+              AI Intern &mdash; Practical development with AI Agents, Sentiment Analysis, and Image Classification workflows.
+            </p>
+            <div class="pill-grid">
+              <span class="matrix-pill">AI Agents</span>
+              <span class="matrix-pill">Sentiment Analysis</span>
+            </div>
+          </div>
+
+          <div class="entry-item">
+            <div class="entry-header">
+              <span class="entry-name">Smart Roadside Assistance</span>
+              <span class="entry-date">MINI PROJECT</span>
+            </div>
+            <p class="entry-desc">
+              Location-based breakdown platform connecting drivers with mechanics via service request automation &amp; backend APIs.
+            </p>
+            <div class="pill-grid">
+              <span class="matrix-pill">Location API</span>
+              <span class="matrix-pill">Flask Backend</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Card 3: EDUCATION & CERTIFICATIONS -->
+        <div class="matrix-card">
+          <div class="card-accent-bar"></div>
+          <div class="matrix-card-title">
+            <span>EDUCATION &amp; CREDENTIALS</span>
+          </div>
+          <div class="entry-item">
+            <div class="entry-header">
+              <span class="entry-name">B.Tech Computer Science</span>
+              <span class="entry-date">2027</span>
+            </div>
+            <p class="entry-desc">Vimal Jyothi Engineering College &middot; CGPA 6.76/10</p>
+          </div>
+          <div class="pill-grid">
+            <span class="matrix-pill highlight">Infosys ML Foundation</span>
+            <span class="matrix-pill">Infosys Python Cert</span>
+            <span class="matrix-pill">NextWave AI Workshop</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ====================================================================
+         BEAT 3: PROJECT HIGHLIGHT (66% - 82%)
+         ==================================================================== -->
+    <div class="experience-stage" id="beat-3">
+      <div class="exp-left">
+        <div class="matrix-card">
+          <div class="card-accent-bar"></div>
+          <div class="matrix-card-title">FEATURED ENGINEERING PROJECT</div>
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;margin-bottom:0.8rem;color:#fff;">
+            Smart Roadside Assistance System
+          </h3>
+          <p style="font-size:0.92rem;line-height:1.6;color:var(--text-muted);margin-bottom:1.2rem;">
+            A responsive, location-based vehicle breakdown assistance platform designed to solve highway emergencies by connecting stranded motorists with vetted nearby mechanics in real time.
+          </p>
+          <div class="pill-grid" style="margin-bottom:1.2rem;">
+            <span class="matrix-pill highlight">Geolocation Routing</span>
+            <span class="matrix-pill">Service Requests</span>
+            <span class="matrix-pill">Backend Automation</span>
+            <span class="matrix-pill">REST APIs</span>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent-coral);">
+            &rarr; Status: Deployed &amp; Evaluated
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-right">
+        <div class="matrix-card">
+          <div class="card-accent-bar"></div>
+          <div class="matrix-card-title">AI &amp; APPLIED RESEARCH</div>
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;margin-bottom:0.8rem;color:#fff;">
+            Novolo.ai &amp; AccelerateX
+          </h3>
+          <p style="font-size:0.92rem;line-height:1.6;color:var(--text-muted);margin-bottom:1.2rem;">
+            Specialized Artificial Intelligence internship focusing on production-grade machine learning workflows, multi-agent frameworks, computer vision classifiers, and sentiment modeling.
+          </p>
+          <div class="pill-grid">
+            <span class="matrix-pill highlight">Supervised Learning</span>
+            <span class="matrix-pill">Agent Architectures</span>
+            <span class="matrix-pill">Image Processing</span>
+            <span class="matrix-pill">Real-World Problem Solving</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         BEAT 4: CONNECT & FINALE (85% - 100%)
+         ==================================================================== -->
+    <div class="contact-stage" id="beat-4">
+      <div class="matrix-category-label" style="justify-content:center;margin-bottom:0.8rem;">
+        <span>// GET IN TOUCH</span>
+      </div>
+      <h2>LET&apos;S BUILD TOGETHER</h2>
+      <p style="font-size:1.05rem;line-height:1.6;color:var(--text-muted);margin-bottom:1.5rem;">
+        Seeking opportunities to apply technical skills in Python, Machine Learning, and Software Engineering to impactful real-world challenges.
+      </p>
+
+      <div class="contact-grid">
+        <a href="mailto:sajilbinuaaa@gmail.com" class="contact-card">
+          <span class="label">EMAIL DIRECT</span>
+          <span class="val">sajilbinuaaa@gmail.com</span>
+        </a>
+
+        <a href="tel:8547016512" class="contact-card">
+          <span class="label">PHONE / WHATSAPP</span>
+          <span class="val">+91 8547016512</span>
+        </a>
+
+        <a href="https://linkedin.com/in/sajil-binu-058181259" target="_blank" rel="noopener noreferrer" class="contact-card">
+          <span class="label">LINKEDIN PROFILE</span>
+          <span class="val">sajil-binu-058181259</span>
+        </a>
+
+        <a href="https://github.com/sajilbinuaaa-create" target="_blank" rel="noopener noreferrer" class="contact-card">
+          <span class="label">GITHUB REPOSITORIES</span>
+          <span class="val">sajilbinuaaa-create</span>
+        </a>
+      </div>
+
+      <div class="btn-row">
+        <a href="sajil Resume.pdf" target="_blank" class="btn-primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download Full Resume
+        </a>
+        <button class="btn-secondary" id="replay-btn">Replay Sequence</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scroll Down Indicator -->
+  <div class="scroll-prompt" id="scroll-prompt">
+    <div class="mouse-icon">
+      <div class="mouse-wheel"></div>
+    </div>
+    <span class="prompt-text">SCROLL TO EXPLORE MATRIX</span>
+  </div>
+
+  <!-- Scroll Spacer to Drive Scroll Physics -->
+  <div id="scroll-track"></div>
+
+  <script>
+    /* ==========================================================================
+       SAJIL CINEMATIC SCROLL & RESUME MATRIX ENGINE
+       ========================================================================== */
+
+    const TOTAL_FRAMES = 300;
+    const FRAME_DIR = 'SajilFrame';
+    const PRIORITY_BATCH_SIZE = 25;
+
+    // DOM Elements
+    const canvas = document.getElementById('scrub-canvas');
+    const ctx = canvas.getContext('2d', { alpha: false });
+    const preloader = document.getElementById('preloader');
+    const preloaderBar = document.getElementById('preloader-bar');
+    const preloaderStats = document.getElementById('preloader-stats');
+    const streamBadge = document.getElementById('stream-badge');
+    const streamDot = document.getElementById('stream-dot');
+    const streamLabel = document.getElementById('stream-label');
+    const scrollPrompt = document.getElementById('scroll-prompt');
+    const soundToggle = document.getElementById('sound-toggle');
+    const soundText = document.getElementById('sound-text');
+    const soundState = document.getElementById('sound-state');
+    const chapterPills = document.querySelectorAll('.chapter-pill');
+    const replayBtn = document.getElementById('replay-btn');
+
+    // Story Beats & Sidecard Columns
+    const beat1 = document.getElementById('beat-1');
+    const beat2 = document.getElementById('beat-2');
+    const beat3 = document.getElementById('beat-3');
+    const beat4 = document.getElementById('beat-4');
+
+    const beat2LeftCol = beat2 ? beat2.querySelector('.matrix-col-left') : null;
+    const beat2RightCol = beat2 ? beat2.querySelector('.matrix-col-right') : null;
+    const beat2LeftCards = beat2LeftCol ? Array.from(beat2LeftCol.querySelectorAll('.matrix-card')) : [];
+    const beat2RightCards = beat2RightCol ? Array.from(beat2RightCol.querySelectorAll('.matrix-card')) : [];
+    const beat2Header = beat2 ? beat2.querySelector('.matrix-header') : null;
+
+    const expLeft = beat3 ? beat3.querySelector('.exp-left') : null;
+    const expRight = beat3 ? beat3.querySelector('.exp-right') : null;
+
+    // State
+    const images = new Array(TOTAL_FRAMES);
+    const loadedStatus = new Uint8Array(TOTAL_FRAMES);
+    let loadedCount = 0;
+    let isAppReady = false;
+
+    // Physics
+    let targetFrame = 0;
+    let currentFrame = 0;
+    let lastRenderedFrame = -1;
+    const LERP_FACTOR = 0.11;
+
+    // Audio
+    let audioCtx = null;
+    let isAudioEnabled = false;
+    let droneGain = null;
+
+    /* --------------------------------------------------------------------------
+       1. STREAM ASSETS
+       -------------------------------------------------------------------------- */
+    function getFrameUrl(index) {
+      const num = String(index + 1).padStart(3, '0');
+      return `${FRAME_DIR}/ezgif-frame-${num}.jpg`;
+    }
+
+    function initFrameLoading() {
+      let priorityLoaded = 0;
+
+      for (let i = 0; i < PRIORITY_BATCH_SIZE; i++) {
+        loadSingleFrame(i, () => {
+          priorityLoaded++;
+          const percent = Math.round((priorityLoaded / PRIORITY_BATCH_SIZE) * 100);
+          preloaderBar.style.width = `${percent}%`;
+          preloaderStats.textContent = `LOADING ASSETS ${percent}%`;
+
+          if (priorityLoaded === PRIORITY_BATCH_SIZE && !isAppReady) {
+            launchExperience();
+            streamRemainingFrames();
+          }
+        });
+      }
+    }
+
+    function loadSingleFrame(index, onComplete) {
+      if (images[index]) return;
+      const img = new Image();
+      img.src = getFrameUrl(index);
+
+      img.onload = () => {
+        images[index] = img;
+        loadedStatus[index] = 1;
+        loadedCount++;
+        updateStreamStatus();
+        if (onComplete) onComplete();
+      };
+
+      img.onerror = () => {
+        loadedStatus[index] = 0;
+        if (onComplete) onComplete();
+      };
+    }
+
+    function streamRemainingFrames() {
+      let currentIndex = PRIORITY_BATCH_SIZE;
+      const CHUNK_SIZE = 15;
+
+      function loadNextChunk() {
+        if (currentIndex >= TOTAL_FRAMES) return;
+        const end = Math.min(currentIndex + CHUNK_SIZE, TOTAL_FRAMES);
+
+        for (let i = currentIndex; i < end; i++) {
+          loadSingleFrame(i);
+        }
+
+        currentIndex = end;
+        if (currentIndex < TOTAL_FRAMES) {
+          setTimeout(loadNextChunk, 60);
+        }
+      }
+
+      loadNextChunk();
+    }
+
+    function updateStreamStatus() {
+      const percent = Math.round((loadedCount / TOTAL_FRAMES) * 100);
+      if (streamLabel) streamLabel.textContent = `BUFFERED ${percent}%`;
+      if (percent >= 100) {
+        streamDot.classList.remove('buffering');
+        streamLabel.textContent = 'READY (100%)';
+        setTimeout(() => { streamBadge.style.opacity = '0.4'; }, 2000);
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       2. ZERO-FLICKER NEAREST FRAME
+       -------------------------------------------------------------------------- */
+    function getNearestLoadedFrame(targetIdx) {
+      const clamped = Math.max(0, Math.min(TOTAL_FRAMES - 1, Math.round(targetIdx)));
+      if (loadedStatus[clamped] === 1 && images[clamped]) return clamped;
+
+      for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
+        const left = clamped - offset;
+        const right = clamped + offset;
+        if (left >= 0 && loadedStatus[left] === 1 && images[left]) return left;
+        if (right < TOTAL_FRAMES && loadedStatus[right] === 1 && images[right]) return right;
+      }
+      return 0;
+    }
+
+    /* --------------------------------------------------------------------------
+       3. HIGH-DPI CANVAS RENDERER
+       -------------------------------------------------------------------------- */
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      lastRenderedFrame = -1;
+      renderCanvasFrame(currentFrame);
+    }
+
+    function renderCanvasFrame(frameIdx) {
+      const validIndex = getNearestLoadedFrame(frameIdx);
+      if (validIndex === lastRenderedFrame) return;
+
+      const img = images[validIndex];
+      if (!img || !img.complete) return;
+
+      const canvasW = canvas.width;
+      const canvasH = canvas.height;
+      const imgW = img.naturalWidth || 1920;
+      const imgH = img.naturalHeight || 1080;
+
+      const scale = Math.max(canvasW / imgW, canvasH / imgH);
+      const drawW = imgW * scale;
+      const drawH = imgH * scale;
+      const drawX = (canvasW - drawW) / 2;
+      const drawY = (canvasH - drawH) / 2;
+
+      ctx.drawImage(img, drawX, drawY, drawW, drawH);
+      lastRenderedFrame = validIndex;
+    }
+
+    /* --------------------------------------------------------------------------
+       4. STORY BEATS & DYNAMIC SCROLL MOTION ENGINE
+       -------------------------------------------------------------------------- */
+    function updateStoryBeats(progress, delta = 0) {
+      const isMobile = window.innerWidth <= 900;
+      const sideMult = isMobile ? 0 : 1;
+      const velocityTilt = Math.max(-5, Math.min(5, delta * 0.22));
+
+      // Scroll Prompt
+      if (progress > 0.04) {
+        scrollPrompt.classList.add('hidden');
+      } else {
+        scrollPrompt.classList.remove('hidden');
+      }
+
+      // Chapter Pills
+      let activeChapterIdx = 0;
+      if (progress >= 0.84) activeChapterIdx = 3;
+      else if (progress >= 0.62) activeChapterIdx = 2;
+      else if (progress >= 0.18) activeChapterIdx = 1;
+
+      chapterPills.forEach((pill, idx) => {
+        pill.classList.toggle('active', idx === activeChapterIdx);
+      });
+
+      // ------------------------------------------------------------------------
+      // BEAT 1: HERO INTRO (0.00 - 0.20)
+      // ------------------------------------------------------------------------
+      if (progress <= 0.12) {
+        beat1.style.opacity = '1';
+        beat1.style.transform = 'translateY(0px) scale(1)';
+        beat1.style.pointerEvents = 'auto';
+        beat1.classList.add('active');
+      } else if (progress > 0.12 && progress <= 0.20) {
+        const f1 = (progress - 0.12) / 0.08;
+        beat1.style.opacity = (1 - f1).toFixed(3);
+        beat1.style.transform = `translateY(${(-60 * f1).toFixed(1)}px) scale(${(1 - 0.03 * f1).toFixed(3)})`;
+        beat1.style.pointerEvents = f1 > 0.6 ? 'none' : 'auto';
+        beat1.classList.toggle('active', f1 <= 0.6);
+      } else {
+        beat1.style.opacity = '0';
+        beat1.style.pointerEvents = 'none';
+        beat1.classList.remove('active');
+      }
+
+      // ------------------------------------------------------------------------
+      // BEAT 2: SKILL ARSENAL DUAL-SIDE CARDS (0.16 - 0.66)
+      // ------------------------------------------------------------------------
+      if (progress < 0.16 || progress > 0.66) {
+        beat2.style.opacity = '0';
+        beat2.style.pointerEvents = 'none';
+        beat2.classList.remove('active');
+      } else {
+        beat2.style.opacity = '1';
+        beat2.style.pointerEvents = 'auto';
+        beat2.classList.add('active');
+
+        if (progress < 0.26) {
+          // Entrance Phase (0.16 -> 0.26): Slide in smoothly from the sides
+          const enterT = (progress - 0.16) / 0.10;
+          const ease = enterT * enterT * (3 - 2 * enterT);
+          const leftX = -110 * (1 - ease) * sideMult;
+          const leftY = 80 * (1 - ease) + 80;
+          const rightX = 110 * (1 - ease) * sideMult;
+          const rightY = 90 * (1 - ease) + 110;
+          const headY = -35 * (1 - ease);
+
+          if (beat2LeftCol) {
+            beat2LeftCol.style.opacity = ease.toFixed(3);
+            beat2LeftCol.style.transform = `translate3d(${leftX.toFixed(1)}px, ${leftY.toFixed(1)}px, 0)`;
+          }
+          if (beat2RightCol) {
+            beat2RightCol.style.opacity = ease.toFixed(3);
+            beat2RightCol.style.transform = `translate3d(${rightX.toFixed(1)}px, ${rightY.toFixed(1)}px, 0)`;
+          }
+          if (beat2Header) {
+            beat2Header.style.transform = `translateY(${headY.toFixed(1)}px)`;
+            beat2Header.style.opacity = ease.toFixed(3);
+          }
+
+          // Neutral card staggers during entrance
+          beat2LeftCards.forEach(c => c.style.setProperty('--stagger-y', '0px'));
+          beat2RightCards.forEach(c => c.style.setProperty('--stagger-y', '0px'));
+
+        } else if (progress >= 0.26 && progress <= 0.58) {
+          // Active Scroll Range (0.26 -> 0.58): Sidecards glide and breathe continuously with scrolling!
+          const s = (progress - 0.26) / 0.32;
+          const sf = s - 0.5; // Normalized scroll offset from center: -0.5 to +0.5
+
+          // Left column drifts vertically with subtle velocity momentum tilt
+          const leftColY = -sf * 160;
+          const leftTilt = velocityTilt * 0.35;
+
+          // Right column drifts with contrasting parallax speed
+          const rightColY = -sf * 220;
+          const rightTilt = -velocityTilt * 0.35;
+
+          if (beat2LeftCol) {
+            beat2LeftCol.style.opacity = '1';
+            beat2LeftCol.style.transform = `translate3d(0, ${leftColY.toFixed(1)}px, 0) rotate(${leftTilt.toFixed(2)}deg)`;
+          }
+          if (beat2RightCol) {
+            beat2RightCol.style.opacity = '1';
+            beat2RightCol.style.transform = `translate3d(0, ${rightColY.toFixed(1)}px, 0) rotate(${rightTilt.toFixed(2)}deg)`;
+          }
+          if (beat2Header) {
+            beat2Header.style.transform = `translateY(${(-sf * 45).toFixed(1)}px)`;
+            beat2Header.style.opacity = '1';
+          }
+
+          // Staggered Parallax Breathing for Individual Sidecards
+          if (beat2LeftCards[0]) beat2LeftCards[0].style.setProperty('--stagger-y', `${(-sf * 35).toFixed(1)}px`);
+          if (beat2LeftCards[1]) beat2LeftCards[1].style.setProperty('--stagger-y', `0px`);
+          if (beat2LeftCards[2]) beat2LeftCards[2].style.setProperty('--stagger-y', `${(sf * 35).toFixed(1)}px`);
+
+          if (beat2RightCards[0]) beat2RightCards[0].style.setProperty('--stagger-y', `${(sf * 45).toFixed(1)}px`);
+          if (beat2RightCards[1]) beat2RightCards[1].style.setProperty('--stagger-y', `0px`);
+          if (beat2RightCards[2]) beat2RightCards[2].style.setProperty('--stagger-y', `${(-sf * 45).toFixed(1)}px`);
+
+        } else {
+          // Exit Phase (0.58 -> 0.66): Slide away smoothly to make room for projects
+          const exitT = (progress - 0.58) / 0.08;
+          const easeOut = exitT * exitT * (3 - 2 * exitT);
+          const leftX = -130 * easeOut * sideMult;
+          const leftY = -80 - (60 * easeOut);
+          const rightX = 130 * easeOut * sideMult;
+          const rightY = -110 - (60 * easeOut);
+          const outOpacity = Math.max(0, 1 - easeOut);
+
+          if (beat2LeftCol) {
+            beat2LeftCol.style.opacity = outOpacity.toFixed(3);
+            beat2LeftCol.style.transform = `translate3d(${leftX.toFixed(1)}px, ${leftY.toFixed(1)}px, 0)`;
+          }
+          if (beat2RightCol) {
+            beat2RightCol.style.opacity = outOpacity.toFixed(3);
+            beat2RightCol.style.transform = `translate3d(${rightX.toFixed(1)}px, ${rightY.toFixed(1)}px, 0)`;
+          }
+          if (beat2Header) {
+            beat2Header.style.opacity = outOpacity.toFixed(3);
+          }
+        }
+      }
+
+      // ------------------------------------------------------------------------
+      // BEAT 3: PROJECT EXPERIENCE SIDE CARDS (0.62 - 0.86)
+      // ------------------------------------------------------------------------
+      if (progress < 0.62 || progress > 0.86) {
+        beat3.style.opacity = '0';
+        beat3.style.pointerEvents = 'none';
+        beat3.classList.remove('active');
+      } else {
+        beat3.style.opacity = '1';
+        beat3.style.pointerEvents = 'auto';
+        beat3.classList.add('active');
+
+        if (progress < 0.70) {
+          // Entrance Phase (0.62 -> 0.70)
+          const enterT3 = (progress - 0.62) / 0.08;
+          const ease3 = enterT3 * enterT3 * (3 - 2 * enterT3);
+          const leftX = -140 * (1 - ease3) * sideMult;
+          const leftY = 60 * (1 - ease3) + 40;
+          const rightX = 140 * (1 - ease3) * sideMult;
+          const rightY = 60 * (1 - ease3) + 50;
+
+          if (expLeft) {
+            expLeft.style.opacity = ease3.toFixed(3);
+            expLeft.style.transform = `translate3d(${leftX.toFixed(1)}px, ${leftY.toFixed(1)}px, 0)`;
+          }
+          if (expRight) {
+            expRight.style.opacity = ease3.toFixed(3);
+            expRight.style.transform = `translate3d(${rightX.toFixed(1)}px, ${rightY.toFixed(1)}px, 0)`;
+          }
+        } else if (progress >= 0.70 && progress <= 0.80) {
+          // Active Scroll Range (0.70 -> 0.80): Both project cards float with scroll
+          const s3 = (progress - 0.70) / 0.10;
+          const sf3 = s3 - 0.5; // -0.5 to +0.5
+          const leftY = -sf3 * 110;
+          const rightY = -sf3 * 140;
+          const leftTilt = velocityTilt * 0.3;
+          const rightTilt = -velocityTilt * 0.3;
+
+          if (expLeft) {
+            expLeft.style.opacity = '1';
+            expLeft.style.transform = `translate3d(0, ${leftY.toFixed(1)}px, 0) rotate(${leftTilt.toFixed(2)}deg)`;
+          }
+          if (expRight) {
+            expRight.style.opacity = '1';
+            expRight.style.transform = `translate3d(0, ${rightY.toFixed(1)}px, 0) rotate(${rightTilt.toFixed(2)}deg)`;
+          }
+        } else {
+          // Exit Phase (0.80 -> 0.86)
+          const exitT3 = (progress - 0.80) / 0.06;
+          const easeOut3 = exitT3 * exitT3 * (3 - 2 * exitT3);
+          const leftX = -130 * easeOut3 * sideMult;
+          const leftY = -55 - (50 * easeOut3);
+          const rightX = 130 * easeOut3 * sideMult;
+          const rightY = -70 - (50 * easeOut3);
+          const outOp = Math.max(0, 1 - easeOut3);
+
+          if (expLeft) {
+            expLeft.style.opacity = outOp.toFixed(3);
+            expLeft.style.transform = `translate3d(${leftX.toFixed(1)}px, ${leftY.toFixed(1)}px, 0)`;
+          }
+          if (expRight) {
+            expRight.style.opacity = outOp.toFixed(3);
+            expRight.style.transform = `translate3d(${rightX.toFixed(1)}px, ${rightY.toFixed(1)}px, 0)`;
+          }
+        }
+      }
+
+      // ------------------------------------------------------------------------
+      // BEAT 4: CONTACT FINALE (0.84 - 1.00)
+      // ------------------------------------------------------------------------
+      if (progress < 0.84) {
+        beat4.style.opacity = '0';
+        beat4.style.pointerEvents = 'none';
+        beat4.classList.remove('active');
+      } else if (progress >= 0.84 && progress < 0.92) {
+        const in4 = (progress - 0.84) / 0.08;
+        const ease4 = in4 * in4 * (3 - 2 * in4);
+        beat4.style.opacity = ease4.toFixed(3);
+        beat4.style.transform = `translateY(${(40 * (1 - ease4)).toFixed(1)}px) scale(${(0.98 + 0.02 * ease4).toFixed(3)})`;
+        beat4.style.pointerEvents = 'auto';
+        beat4.classList.add('active');
+      } else {
+        beat4.style.opacity = '1';
+        beat4.style.transform = 'translateY(0px) scale(1)';
+        beat4.style.pointerEvents = 'auto';
+        beat4.classList.add('active');
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       5. TICK PHYSICS LOOP
+       -------------------------------------------------------------------------- */
+    function animationLoop() {
+      const delta = targetFrame - currentFrame;
+      if (Math.abs(delta) > 0.001) {
+        currentFrame += delta * LERP_FACTOR;
+      } else {
+        currentFrame = targetFrame;
+      }
+
+      renderCanvasFrame(currentFrame);
+
+      const progress = currentFrame / (TOTAL_FRAMES - 1);
+      updateStoryBeats(progress, delta);
+
+      requestAnimationFrame(animationLoop);
+    }
+
+    /* --------------------------------------------------------------------------
+       6. INTERACTION LISTENERS
+       -------------------------------------------------------------------------- */
+    function onWindowScroll() {
+      const scrollTop = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (maxScroll <= 0) return;
+
+      const progress = Math.max(0, Math.min(1, scrollTop / maxScroll));
+      targetFrame = progress * (TOTAL_FRAMES - 1);
+    }
+
+    function jumpToProgress(progress, smooth = true) {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const targetScroll = progress * maxScroll;
+
+      if (smooth) {
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      } else {
+        window.scrollTo(0, targetScroll);
+      }
+      targetFrame = progress * (TOTAL_FRAMES - 1);
+    }
+
+    function setupEventListeners() {
+      window.addEventListener('resize', resizeCanvas);
+      window.addEventListener('scroll', onWindowScroll, { passive: true });
+
+      chapterPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          const targetProg = parseFloat(pill.getAttribute('data-progress'));
+          jumpToProgress(targetProg, true);
+        });
+      });
+
+      replayBtn.addEventListener('click', () => {
+        jumpToProgress(0.0, true);
+      });
+
+      soundToggle.addEventListener('click', toggleAudio);
+      window.addEventListener('pointerdown', autoStartAudioOnInteraction, { once: true });
+      window.addEventListener('keydown', autoStartAudioOnInteraction, { once: true });
+    }
+
+    /* --------------------------------------------------------------------------
+       7. OLD TOWN ROAD SOUNDTRACK ENGINE
+       -------------------------------------------------------------------------- */
+    let soundtrack = null;
+    let isTrackPlaying = false;
+    let userPaused = false;
+
+    function initSoundtrack() {
+      if (soundtrack) return;
+      soundtrack = new Audio('old_town_road.mp3');
+      soundtrack.loop = true;
+      soundtrack.volume = 0.6;
+      soundtrack.preload = 'auto';
+
+      soundtrack.addEventListener('play', () => {
+        isTrackPlaying = true;
+        soundToggle.classList.add('playing');
+        if (soundState) soundState.textContent = 'PAUSE';
+      });
+
+      soundtrack.addEventListener('pause', () => {
+        isTrackPlaying = false;
+        soundToggle.classList.remove('playing');
+        if (soundState) soundState.textContent = 'PLAY';
+      });
+
+      soundtrack.addEventListener('error', (e) => {
+        console.warn('Soundtrack loading notice:', e);
+      });
+    }
+
+    function toggleAudio(e) {
+      if (e) e.stopPropagation();
+      if (!soundtrack) initSoundtrack();
+      if (!soundtrack) return;
+
+      if (soundtrack.paused) {
+        userPaused = false;
+        soundtrack.play().catch(err => console.warn('Audio play prevented:', err));
+      } else {
+        userPaused = true;
+        soundtrack.pause();
+      }
+    }
+
+    function autoStartAudioOnInteraction() {
+      if (userPaused) return;
+      if (!soundtrack) initSoundtrack();
+      if (soundtrack && soundtrack.paused) {
+        soundtrack.play().catch(() => {
+          // Browser requires user to directly click the soundToggle button
+        });
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       8. LAUNCH INITIALIZATION
+       -------------------------------------------------------------------------- */
+    function launchExperience() {
+      isAppReady = true;
+      resizeCanvas();
+      renderCanvasFrame(0);
+
+      preloader.classList.add('dismissed');
+
+      setupEventListeners();
+      requestAnimationFrame(animationLoop);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initFrameLoading();
+    });
+  </script>
+</body>
+</html>

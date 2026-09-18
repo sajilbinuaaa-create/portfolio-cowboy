@@ -1,6 +1,11 @@
 # Sajil Binu — Portfolio Matrix
 
+> 🌐 **Live Website:** [https://portfolio-cowboy.vercel.app/](https://portfolio-cowboy.vercel.app/)
+
 An interactive, high-performance portfolio featuring a 300-frame cinematic scroll sequence, dynamic sidecard parallax physics, and the "Old Town Road" soundtrack.
+
+## 🔗 Live Demo
+Visit the live deployed portfolio here: **[https://portfolio-cowboy.vercel.app/](https://portfolio-cowboy.vercel.app/)**
 
 ## 🚀 Features
 - **Cinematic Canvas Scrubbing:** 300 high-DPI frames dynamically scrubbed via smooth scroll interpolation.
